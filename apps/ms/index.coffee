@@ -7,7 +7,13 @@ c4ini = require 'c4ini'
 module.exports = app = express()
 
 app.get '/cr', (req, res) ->
-  request.get('http://clonk.de:84/league/server').end (ms) ->
+  masterserverQuery('http://clonk.de:84/league/server', res)
+
+app.get '/oc', (req, res) ->
+  masterserverQuery('http://boom.openclonk.org/server/', res)
+
+masterserverQuery = (url, res) ->
+  request.get(url).end (ms) ->
     if ms.ok
       try
         obj = c4ini(ms.text)
