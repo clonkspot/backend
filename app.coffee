@@ -14,7 +14,7 @@ else
   app.use express.logger 'dev'
 
 # Mount modules.
-app.use require('./apps/ms')
+app.use '/ms', require('./apps/ms')
 
 # Only run if invoked directly.
 if process.argv[1] is __filename
