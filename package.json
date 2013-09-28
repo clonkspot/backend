@@ -13,7 +13,10 @@
     "express": "3.1.0",
     "underscore": "~1.4.4",
     "c4ini": "~0.1.0",
-    "superagent": "~0.15.4"
+    "superagent": "~0.15.4",
+    "mysql": "~2.0.0-alpha9",
+    "convict": "~0.4.0",
+    "rsvp": "~2.0.4"
   },
   "devDependencies": {}
 }
