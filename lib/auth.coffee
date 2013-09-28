@@ -27,6 +27,6 @@ mw = (req, res, next) ->
       res.locals.user = user
       next()
     , (err) ->
-      res.send(403, {error: err.message})
+      res.send(403, {message: err.message})
 
 module.exports = {getUser, mw}
