@@ -5,7 +5,7 @@ express = require 'express'
 {connected} = require './db/mongo'
 
 # Initialize the application
-exports.app = app = express()
+module.exports = app = express()
 
 # Is the application running in production?
 GLOBAL.PRODUCTION = app.get('env') is 'production'
@@ -19,7 +19,7 @@ app.use express.cookieParser()
 app.use express.json()
 app.use require('express-promise')()
 
-# Mount modules and run as soon as the database is connected.
+# Mount modules as soon as the database is connected.
 connected.then ->
   app.use '/users', require('./apps/users')
   app.use '/news', require('./apps/news')
@@ -29,8 +29,3 @@ connected.then ->
   app.use (err, req, res, next) ->
     res.send 500, {message: err.message}
 
-  # Only run if invoked directly.
-  if process.argv[1] is __filename
-    PORT = 3236
-    app.listen PORT
-    console.log "Running on port #{PORT}"
