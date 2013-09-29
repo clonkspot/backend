@@ -4,6 +4,7 @@ _ = require 'underscore'
 rsvp = require 'rsvp'
 
 mysqlquery = require '../db/mysql'
+conf = require '../config'
 
 # Returns a promise for a user object.
 getUser = (uid) ->
@@ -27,7 +28,7 @@ authenticate = (cookie) ->
 
 # Middleware attaching the user to the request object.
 mw = (req, res, next) ->
-  authenticate(req.cookies.mwf_login)
+  authenticate(req.cookies[conf.get('mwf_cookie')])
     .then (user) ->
       res.locals.user = user
       next()

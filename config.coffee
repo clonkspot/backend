@@ -13,6 +13,12 @@ conf = convict
     format: (s) -> /^mongodb:\/\//.test(s) # URL doesn't accept mongodb as protocol
     env: 'CLONKSPOT_MONGODB'
 
+  mwf_cookie:
+    doc: 'The name of the MWF login cookie.'
+    default: 'mwf_login'
+    format: String
+    env: 'MWF_COOKIE'
+
 conf.validate()
 
 module.exports = conf
