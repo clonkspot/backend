@@ -25,6 +25,10 @@ connected.then ->
   app.use '/news', require('./apps/news')
   app.use '/ms', require('./apps/ms')
 
+  # Error handling
+  app.use (err, req, res, next) ->
+    res.send 500, {message: err.message}
+
   # Only run if invoked directly.
   if process.argv[1] is __filename
     PORT = 3236
