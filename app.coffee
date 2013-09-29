@@ -13,8 +13,11 @@ if PRODUCTION
 else
   app.use express.logger 'dev'
 
+app.use express.cookieParser()
+
 # Mount modules.
 app.use '/ms', require('./apps/ms')
+app.use '/users', require('./apps/users')
 
 # Only run if invoked directly.
 if process.argv[1] is __filename
