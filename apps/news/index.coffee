@@ -12,8 +12,9 @@ app.get '/', (req, res) ->
   res.send(news.find(req.query.lang))
 
 app.post '/',
-  auth.mw, 
-  mw.is('admin', 403, (req, res) -> res.locals.user.admin),
+  auth.mw,
+  auth.mwRights,
+  mw.can('edit_news'),
   (req, res) ->
     item = req.body
     if item._id
