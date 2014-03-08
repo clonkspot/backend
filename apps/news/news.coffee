@@ -2,6 +2,7 @@
 
 rsvp = require 'rsvp'
 _ = require 'underscore'
+{ObjectID} = require 'mongodb'
 
 {db} = require '../../db/mongo'
 prh = require '../../lib/promises'
@@ -34,7 +35,7 @@ insert = (entry) ->
 update = (entry) ->
   prepareItem(entry).then (filtered) ->
     new rsvp.Promise (resolve, reject) ->
-      news.findAndModify {_id: entry._id},
+      news.findAndModify {_id: new ObjectID(entry._id)},
         [['_id', 1]],
         {$set: filtered},
         {new: true},
