@@ -6,6 +6,8 @@ rsvp = require 'rsvp'
 mysqlquery = require '../db/mysql'
 conf = require '../config'
 
+userrights = require './userrights'
+
 # Returns a promise for a user object.
 getUser = (uid) ->
   mysqlquery('SELECT * FROM users WHERE id=?', [uid])
@@ -14,6 +16,16 @@ getUser = (uid) ->
         result[0]
       else
         throw new Error('User not found.')
+
+# Returns a promise with an array of the user's groups.
+getGroups = (uid) ->
+  mysqlquery('''
+    SELECT groups.id, groups.title
+      FROM groups AS groups
+        INNER JOIN groupMembers AS groupMembers
+          ON groupMembers.userId = ?
+          AND groupMembers.groupId = groups.id
+  ''', [uid])
 
 # Tries to authenticate by login cookie.
 authenticate = (cookie) ->
@@ -35,4 +47,16 @@ mw = (req, res, next) ->
     , (err) ->
       res.send(403, {message: err.message})
 
-module.exports = {getUser, mw}
+# Middleware adding user rights.
+#
+# The authenication middleware (above) has to be run first.
+mwRights = (req, res, next) ->
+  user = res.locals.user
+  getGroups(user.id).then (groups) ->
+    rights = {}
+    for key, hasRight of userrights
+      rights[key] = true if user.admin or hasRight(user, groups)
+    user.rights = rights
+    next()
+
+module.exports = {getUser, getGroups, mw, mwRights}
