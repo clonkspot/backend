@@ -1,6 +1,12 @@
 convict = require 'convict'
 
 conf = convict
+  port:
+    doc: 'The port to bind.'
+    format: 'port'
+    default: 3236
+    env: 'PORT'
+
   mysql:
     doc: 'The MySQL connection string.'
     default: 'mysql://root:@localhost/mwf'

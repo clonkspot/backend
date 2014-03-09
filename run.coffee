@@ -2,9 +2,10 @@
 
 app = require './app'
 {connected} = require './db/mongo'
+cfg = require './config'
 
 # Wait for the db connection.
 connected.then ->
-  PORT = 3236
+  PORT = cfg.get 'port'
   app.listen PORT
   console.log "Running on port #{PORT}"
